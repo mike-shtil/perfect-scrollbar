@@ -8,7 +8,7 @@ var updateScroll = require('../update-scroll');
 function bindSelectionHandler(element, i) {
   function getRangeNode() {
     var selection = window.getSelection ? window.getSelection() :
-                    document.getSelection ? document.getSelection() : '';
+      document.getSelection ? document.getSelection() : '';
     if (selection.toString().length === 0) {
       return null;
     } else {
@@ -64,13 +64,15 @@ function bindSelectionHandler(element, i) {
 
   i.event.bind(window, 'mousemove', function (e) {
     if (isSelected) {
-      var mousePosition = {x: e.pageX, y: e.pageY};
+      var containerClientRect = element.getBoundingClientRect();
       var containerGeometry = {
-        left: element.offsetLeft,
-        right: element.offsetLeft + element.offsetWidth,
-        top: element.offsetTop,
-        bottom: element.offsetTop + element.offsetHeight
+        left: containerClientRect.left,
+        right: containerClientRect.right,
+        top: containerClientRect.top,
+        bottom: containerClientRect.bottom
       };
+
+      var mousePosition = {x: e.pageX, y: e.pageY};
 
       if (mousePosition.x < containerGeometry.left + 3) {
         scrollDiff.left = -5;
@@ -82,7 +84,7 @@ function bindSelectionHandler(element, i) {
         scrollDiff.left = 0;
       }
 
-      if (mousePosition.y < containerGeometry.top + 3) {
+      if (mousePosition.y < containerGeometry.top + 15) {
         if (containerGeometry.top + 3 - mousePosition.y < 5) {
           scrollDiff.top = -5;
         } else {
